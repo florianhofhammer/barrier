@@ -2,11 +2,11 @@
  * barrier -- mouse and keyboard sharing utility
  * Copyright (C) 2012-2016 Symless Ltd.
  * Copyright (C) 2002 Chris Schoeneman
- * 
+ *
  * This package is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * found in the file LICENSE that should have accompanied this file.
- * 
+ *
  * This package is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -139,10 +139,10 @@ PrimaryClient::disable()
 
 void
 PrimaryClient::enter(SInt32 xAbs, SInt32 yAbs,
-                UInt32 seqNum, KeyModifierMask mask, bool screensaver)
+                UInt32 seqNum, KeyModifierMask mask, bool forScreensaver)
 {
     m_screen->setSequenceNumber(seqNum);
-    if (!screensaver) {
+    if (!forScreensaver) {
         m_screen->warpCursor(xAbs, yAbs);
     }
     m_screen->enter(mask);
@@ -244,9 +244,9 @@ PrimaryClient::mouseWheel(SInt32, SInt32)
 }
 
 void
-PrimaryClient::screensaver(bool)
+PrimaryClient::screensaver(bool activate)
 {
-    // ignore
+    m_screen->screensaver(activate);
 }
 
 void

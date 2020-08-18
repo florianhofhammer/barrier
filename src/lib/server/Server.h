@@ -2,11 +2,11 @@
  * barrier -- mouse and keyboard sharing utility
  * Copyright (C) 2012-2016 Symless Ltd.
  * Copyright (C) 2002 Chris Schoeneman
- * 
+ *
  * This package is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * found in the file LICENSE that should have accompanied this file.
- * 
+ *
  * This package is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -150,7 +150,7 @@ public:
 
     //! Store ClientListener pointer
     void                setListener(ClientListener* p) { m_clientListener = p; }
-    
+
     //@}
     //! @name accessors
     //@{
@@ -166,7 +166,7 @@ public:
     Set the \c list to the names of the currently connected clients.
     */
     void getClients(std::vector<std::string>& list) const;
-    
+
     //! Return true if recieved file size is valid
     bool                isReceivedFileSizeValid();
 
@@ -357,10 +357,10 @@ private:
 
     // force the cursor off of \p client
     void                forceLeaveClient(BaseClientProxy* client);
-    
+
     // thread funciton for sending file
     void                sendFileThread(void*);
-    
+
     // thread function for writing file to drop directory
     void                writeToDropDirThread(void*);
 
@@ -379,41 +379,41 @@ private:
         ClipboardInfo();
 
     public:
-        Clipboard        m_clipboard;
+        Clipboard       m_clipboard;
         std::string m_clipboardData;
         std::string m_clipboardOwner;
-        UInt32            m_clipboardSeqNum;
+        UInt32          m_clipboardSeqNum;
     };
 
     // the primary screen client
-    PrimaryClient*        m_primaryClient;
+    PrimaryClient*      m_primaryClient;
 
     // all clients (including the primary client) indexed by name
     typedef std::map<std::string, BaseClientProxy*> ClientList;
     typedef std::set<BaseClientProxy*> ClientSet;
-    ClientList            m_clients;
-    ClientSet            m_clientSet;
+    ClientList          m_clients;
+    ClientSet           m_clientSet;
 
     // all old connections that we're waiting to hangup
     typedef std::map<BaseClientProxy*, EventQueueTimer*> OldClients;
-    OldClients            m_oldClients;
+    OldClients          m_oldClients;
 
     // the client with focus
     BaseClientProxy*    m_active;
 
     // the sequence number of enter messages
-    UInt32                m_seqNum;
+    UInt32              m_seqNum;
 
     // current mouse position (in absolute screen coordinates) on
     // whichever screen is active
-    SInt32                m_x, m_y;
+    SInt32              m_x, m_y;
 
     // last mouse deltas.  this is needed to smooth out double tap
     // on win32 which reports bogus mouse motion at the edge of
     // the screen when using low level hooks, synthesizing motion
     // in the opposite direction the mouse actually moved.
-    SInt32                m_xDelta, m_yDelta;
-    SInt32                m_xDelta2, m_yDelta2;
+    SInt32              m_xDelta, m_yDelta;
+    SInt32              m_xDelta2, m_yDelta2;
 
     // current configuration
     Config*                m_config;
@@ -422,41 +422,43 @@ private:
     InputFilter*        m_inputFilter;
 
     // clipboard cache
-    ClipboardInfo        m_clipboards[kClipboardEnd];
+    ClipboardInfo       m_clipboards[kClipboardEnd];
 
     // state saved when screen saver activates
     BaseClientProxy*    m_activeSaver;
-    SInt32                m_xSaver, m_ySaver;
+    SInt32              m_xSaver, m_ySaver;
+    Stopwatch           m_screensaverDelayTimer; // Used for preventing duplicate messages to clients
+    const double        SCREENSAVER_DELAY_THRESHOLD = 0.5;
 
     // common state for screen switch tests.  all tests are always
     // trying to reach the same screen in the same direction.
-    EDirection            m_switchDir;
+    EDirection          m_switchDir;
     BaseClientProxy*    m_switchScreen;
 
     // state for delayed screen switching
-    double                m_switchWaitDelay;
+    double              m_switchWaitDelay;
     EventQueueTimer*    m_switchWaitTimer;
-    SInt32                m_switchWaitX, m_switchWaitY;
+    SInt32              m_switchWaitX, m_switchWaitY;
 
     // state for double-tap screen switching
-    double                m_switchTwoTapDelay;
-    Stopwatch            m_switchTwoTapTimer;
+    double              m_switchTwoTapDelay;
+    Stopwatch           m_switchTwoTapTimer;
     bool                m_switchTwoTapEngaged;
     bool                m_switchTwoTapArmed;
-    SInt32                m_switchTwoTapZone;
+    SInt32              m_switchTwoTapZone;
 
     // modifiers needed before switching
     bool                m_switchNeedsShift;
     bool                m_switchNeedsControl;
     bool                m_switchNeedsAlt;
-    
+
     // relative mouse move option
     bool                m_relativeMoves;
 
     // flag whether or not we have broadcasting enabled and the screens to
     // which we should send broadcasted keys.
     bool                m_keyboardBroadcasting;
-    std::string m_keyboardBroadcastingScreens;
+    std::string         m_keyboardBroadcastingScreens;
 
     // screen locking (former scroll lock)
     bool                m_lockedToScreen;
@@ -467,19 +469,19 @@ private:
     IEventQueue*        m_events;
 
     // file transfer
-    size_t                m_expectedFileSize;
-    std::string m_receivedFileData;
+    size_t              m_expectedFileSize;
+    std::string         m_receivedFileData;
     DragFileList        m_dragFileList;
     DragFileList        m_fakeDragFileList;
-    Thread*                m_sendFileThread;
-    Thread*                m_writeToDropDirThread;
-    std::string m_dragFileExt;
+    Thread*             m_sendFileThread;
+    Thread*             m_writeToDropDirThread;
+    std::string         m_dragFileExt;
     bool                m_ignoreFileTransfer;
     bool                m_enableClipboard;
 
-    Thread*                m_sendDragInfoThread;
+    Thread*             m_sendDragInfoThread;
     bool                m_waitDragInfoThread;
 
-    ClientListener*        m_clientListener;
-    ServerArgs            m_args;
+    ClientListener*     m_clientListener;
+    ServerArgs          m_args;
 };
